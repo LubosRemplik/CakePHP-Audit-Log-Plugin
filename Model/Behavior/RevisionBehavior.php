@@ -5,12 +5,12 @@
  */
 class RevisionBehavior extends ModelBehavior {
 
-	public function beforeFind($model, $queryData) {
+	public function beforeFind(Model $model, $queryData) {
 		$model->revisionQueryData = $queryData;
 		return $queryData;
 	}
 
-	public function afterFind($model, $results, $primary = false) {
+	public function afterFind(Model $model, $results, $primary = false) {
 		parent::afterFind($model, $results, $primary);
 		if (!empty($model->revision)) {
 			$dataModified = false;
@@ -166,7 +166,7 @@ class RevisionBehavior extends ModelBehavior {
 		return $results;
 	}
 
-	public function revertTo($model, $id, $conditions) {
+	public function revertTo(Model $model, $id, $conditions) {
 		$Audit = ClassRegistry::init('Audit');
 		$Audit->bindModel(array('hasMany' => array('AuditDelta')), false);
 		$audit = $Audit->findById($id);
