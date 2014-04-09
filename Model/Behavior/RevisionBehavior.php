@@ -12,10 +12,10 @@ class RevisionBehavior extends ModelBehavior {
 
 	public function afterFind(Model $model, $results, $primary = false) {
 		parent::afterFind($model, $results, $primary);
-		if (!empty($model->revision)) {
+		$Audit = ClassRegistry::init('Audit');
+		$Audit->bindModel(array('hasMany' => array('AuditDelta')), false);
+		if (!empty($model->revision) && $Audit->hasAny(array('id' => $model->revision))) {
 			$dataModified = false;
-			$Audit = ClassRegistry::init('Audit');
-			$Audit->bindModel(array('hasMany' => array('AuditDelta')), false);
 			$auditCreated = $Audit->field('created', array(
 				'id' => $model->revision
 			));
